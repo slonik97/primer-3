@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SLONIK97 — стрит-фуд бар: бургеры, лапша, огонь</title>
+<meta name="description" content="SLONIK97 — стрит-фуд бар. Бургеры на гриле, лапша из вока и доставка за 30 минут. Демо-сайт.">
+<meta name="theme-color" content="#FFE500">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23FFE500'/%3E%3Cg fill='%23111'%3E%3Crect x='5' y='4' width='9' height='6'/%3E%3Crect x='1' y='3' width='5' height='5'/%3E%3Crect x='1' y='8' width='2' height='4'/%3E%3Crect x='6' y='10' width='2' height='3'/%3E%3Crect x='11' y='10' width='2' height='3'/%3E%3C/g%3E%3Crect x='4' y='2' width='3' height='4' fill='%23FF4D1C'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Onest:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --y:#FFE500; --k:#111111; --r:#FF4D1C; --b:#2B4BFF; --w:#FFFBEF; --g:#00C27A; --p:#FF8AD8;
+  --bd:3px solid var(--k);
+  --sh:6px 6px 0 var(--k);
+  --pad:clamp(16px,4vw,56px);
+  --section:clamp(64px,9vw,130px);
+  --ease:cubic-bezier(.2,.9,.2,1);
+  --snap:cubic-bezier(.34,1.7,.5,1);
+  --head:'Unbounded',Impact,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--w);color:var(--k);font-family:'Onest',system-ui,sans-serif;font-size:clamp(16px,1.1vw,18px);line-height:1.5;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+h1,h2,h3{font-family:var(--head);font-weight:900;text-transform:uppercase;line-height:.95;letter-spacing:-.03em}
+h2{font-size:clamp(34px,6.4vw,96px)}
+.wrap{width:min(1400px,100%);margin-inline:auto;padding-inline:var(--pad)}
+section{padding-block:var(--section);position:relative}
+::selection{background:var(--k);color:var(--y)}
+:focus-visible{outline:4px solid var(--b);outline-offset:3px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:58px;padding:0 28px;font-family:var(--head);font-weight:700;font-size:14px;text-transform:uppercase;border:var(--bd);background:var(--k);color:var(--y);box-shadow:var(--sh);transition:transform .18s var(--ease),box-shadow .18s var(--ease),background .2s}
+.btn:hover{transform:translate(-3px,-3px);box-shadow:9px 9px 0 var(--k)}
+.btn:active{transform:translate(6px,6px);box-shadow:0 0 0 var(--k)}
+.btn.alt{background:var(--w);color:var(--k)}
+.btn.red{background:var(--r);color:#fff}
+.chip{display:inline-block;border:var(--bd);padding:5px 12px;font-family:var(--head);font-weight:700;font-size:11px;text-transform:uppercase;background:var(--w)}
+
+/* ticker */
+.tick{background:var(--k);color:var(--y);overflow:hidden;border-bottom:var(--bd);font-family:var(--head);font-weight:700;font-size:13px;text-transform:uppercase;padding:10px 0}
+.tick div{display:flex;gap:40px;width:max-content;animation:mq 26s linear infinite;white-space:nowrap}
+.tick span::after{content:"✦";margin-left:40px;color:var(--r)}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:50;background:var(--y);border-bottom:var(--bd)}
+.nav-in{display:flex;align-items:stretch;justify-content:space-between;min-height:68px}
+.logo{display:flex;align-items:center;gap:12px;font-family:var(--head);font-weight:900;font-size:22px;letter-spacing:-.04em;padding-right:24px}
+.logo svg{width:52px;height:40px;transition:transform .3s var(--snap)}
+.logo:hover svg{transform:translateY(-4px) rotate(-6deg)}
+.logo b{background:var(--k);color:var(--y);padding:2px 8px;margin-left:2px}
+.links{display:flex;list-style:none;border-left:var(--bd)}
+.links a{display:flex;align-items:center;height:100%;padding:0 clamp(14px,2vw,28px);font-family:var(--head);font-weight:700;font-size:12px;text-transform:uppercase;border-right:var(--bd);transition:background .15s,color .15s}
+.links a:hover{background:var(--k);color:var(--y)}
+.links .hot{background:var(--r);color:#fff}
+.burger{display:none;width:68px;border-left:var(--bd);position:relative;background:var(--k)}
+.burger span{position:absolute;left:20px;right:20px;height:4px;background:var(--y);transition:transform .3s var(--ease),top .3s var(--ease)}
+.burger span:first-child{top:26px}.burger span:last-child{top:38px}
+.open .burger span:first-child{top:32px;transform:rotate(45deg)}
+.open .burger span:last-child{top:32px;transform:rotate(-45deg)}
+
+/* hero */
+.hero{background:var(--y);border-bottom:var(--bd);padding-block:clamp(36px,6vw,90px) clamp(56px,7vw,100px);overflow:hidden}
+.hero-grid>*,.order-grid>*{min-width:0}
+.hero-grid{display:grid;grid-template-columns:1.45fr .8fr;gap:clamp(30px,5vw,80px);align-items:center}
+.hero h1{font-size:clamp(34px,5.8vw,84px)}
+.hero h1 span{display:block;overflow:hidden}
+.hero h1 span i{display:block;font-style:normal;transform:translateY(105%);animation:up .9s var(--ease) forwards;animation-delay:calc(var(--i)*110ms + .1s)}
+@keyframes up{to{transform:none}}
+.hero h1 .out{color:transparent;-webkit-text-stroke:clamp(2px,.25vw,4px) var(--k)}
+.hero h1 .box{display:inline-block;background:var(--k);color:var(--y);padding:0 .12em;transform:rotate(-2deg)}
+.hero p{font-size:clamp(17px,1.5vw,22px);font-weight:500;max-width:44ch;margin:clamp(22px,2.6vw,38px) 0}
+.cta{display:flex;flex-wrap:wrap;gap:16px}
+.facts{display:flex;flex-wrap:wrap;gap:10px;margin-top:clamp(26px,3vw,44px)}
+.pic{position:relative;max-width:520px;margin-inline:auto;width:100%}
+.pic figure{border:var(--bd);box-shadow:12px 12px 0 var(--k);transform:rotate(3deg);overflow:hidden;aspect-ratio:4/4.6;background:var(--k);transition:transform .5s var(--snap)}
+.pic:hover figure{transform:rotate(-1.5deg) scale(1.02)}
+.pic img{width:100%;height:100%;object-fit:cover}
+.badge{position:absolute;left:-9%;bottom:-8%;width:clamp(120px,13vw,180px);aspect-ratio:1;z-index:2}
+.badge svg{width:100%;height:100%;animation:rot 14s linear infinite}
+.badge b{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--head);font-weight:900;font-size:clamp(28px,3vw,44px);color:var(--y)}
+@keyframes rot{to{transform:rotate(360deg)}}
+.tape{position:absolute;right:-6%;top:8%;background:var(--r);color:#fff;border:var(--bd);font-family:var(--head);font-weight:900;font-size:clamp(14px,1.5vw,20px);padding:8px 16px;transform:rotate(10deg);z-index:2;animation:wig 2.4s ease-in-out infinite}
+@keyframes wig{50%{transform:rotate(4deg) scale(1.06)}}
+
+/* big marquee */
+.big{border-bottom:var(--bd);background:var(--r);color:#fff;overflow:hidden;padding:clamp(12px,1.6vw,22px) 0}
+.big div{display:flex;gap:.6em;width:max-content;font-family:var(--head);font-weight:900;font-size:clamp(34px,6vw,90px);text-transform:uppercase;letter-spacing:-.03em;white-space:nowrap;animation:mq 22s linear infinite;line-height:1}
+.big span:nth-child(even){color:transparent;-webkit-text-stroke:2px #fff}
+
+/* menu */
+.top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:clamp(28px,4vw,56px)}
+.top h2 em{font-style:normal;background:var(--y);padding:0 .1em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.filters{display:flex;flex-wrap:wrap;gap:10px}
+.filters button{border:var(--bd);padding:0 20px;min-height:48px;font-family:var(--head);font-weight:700;font-size:12px;text-transform:uppercase;background:var(--w);box-shadow:4px 4px 0 var(--k);transition:transform .15s,box-shadow .15s,background .15s}
+.filters button:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--k)}
+.filters button.on{background:var(--k);color:var(--y);transform:translate(4px,4px);box-shadow:0 0 0 var(--k)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(280px,100%),1fr));gap:clamp(18px,2.2vw,30px)}
+.food{border:var(--bd);background:var(--w);box-shadow:var(--sh);display:flex;flex-direction:column;transition:transform .22s var(--ease),box-shadow .22s var(--ease),opacity .3s;position:relative}
+.food:hover{transform:translate(-4px,-4px) rotate(-.6deg);box-shadow:10px 10px 0 var(--k)}
+.food.gone{display:none}
+.food.pop{animation:pop .45s var(--snap) both;animation-delay:calc(var(--n)*50ms)}
+@keyframes pop{from{opacity:0;transform:scale(.86) rotate(-3deg)}}
+.food figure{aspect-ratio:4/3;overflow:hidden;border-bottom:var(--bd);background:var(--k)}
+.food img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease)}
+.food:hover img{transform:scale(1.1) rotate(2deg)}
+.food .lab{position:absolute;top:12px;left:12px;background:var(--y)}
+.food .lab.r{background:var(--r);color:#fff}.food .lab.b{background:var(--b);color:#fff}.food .lab.g{background:var(--g)}
+.food .in{padding:18px 18px 20px;display:flex;flex-direction:column;gap:8px;flex:1}
+.food h3{font-size:19px;letter-spacing:-.02em;line-height:1.1}
+.food p{font-size:15px;color:#444;flex:1}
+.food .row{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.food .pr{font-family:var(--head);font-weight:900;font-size:24px}
+.food .add{width:48px;height:48px;border:var(--bd);background:var(--y);font-family:var(--head);font-weight:900;font-size:22px;display:grid;place-items:center;transition:background .15s,transform .2s var(--snap)}
+.food .add:hover{background:var(--k);color:var(--y);transform:rotate(90deg)}
+.food.yours{background:repeating-linear-gradient(-45deg,var(--w) 0 14px,#FFF3B0 14px 28px)}
+.food.yours figure{display:grid;place-items:center;background:var(--b);color:#fff;font-family:var(--head);font-weight:900;font-size:clamp(20px,2vw,26px);text-transform:uppercase;text-align:center;line-height:1.05;padding:20px}
+
+/* combo */
+.combo{background:var(--b);color:#fff;border-block:var(--bd)}
+.combo h2 em{font-style:normal;color:var(--y)}
+.combo-grid{display:grid;grid-template-columns:1.3fr .8fr;gap:clamp(24px,4vw,60px);align-items:start;margin-top:clamp(28px,4vw,56px)}
+.step{border:var(--bd);background:var(--w);color:var(--k);box-shadow:var(--sh);padding:clamp(18px,2.2vw,28px);margin-bottom:22px}
+.step h3{font-size:16px;display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.step h3 b{width:36px;height:36px;display:grid;place-items:center;background:var(--k);color:var(--y);flex:none}
+.opts{display:flex;flex-wrap:wrap;gap:10px}
+.opts label{position:relative;cursor:pointer}
+.opts input{position:absolute;opacity:0;inset:0}
+.opts span{display:flex;align-items:center;gap:10px;min-height:48px;border:var(--bd);padding:0 16px;font-weight:700;font-size:15px;background:var(--w);transition:background .15s,transform .2s var(--snap)}
+.opts span small{font-family:var(--head);font-size:11px;opacity:.6}
+.opts label:hover span{transform:translateY(-3px)}
+.opts input:checked+span{background:var(--y);box-shadow:4px 4px 0 var(--k);transform:translate(-2px,-2px)}
+.opts input:focus-visible+span{outline:4px solid var(--r);outline-offset:2px}
+.sum{border:var(--bd);background:var(--y);color:var(--k);box-shadow:12px 12px 0 var(--k);padding:clamp(22px,2.6vw,36px);position:sticky;top:96px;transform:rotate(1.5deg)}
+.sum h3{font-size:14px;margin-bottom:14px}
+.sum ul{list-style:none;border-top:var(--bd);margin-bottom:18px}
+.sum li{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:2px dashed var(--k);font-weight:700}
+.sum .old{font-family:var(--head);font-weight:700;text-decoration:line-through;opacity:.55;font-size:18px}
+.sum .tot{font-family:var(--head);font-weight:900;font-size:clamp(46px,5vw,72px);line-height:1;margin:4px 0 6px;display:block}
+.sum .save{display:inline-block;background:var(--r);color:#fff;border:var(--bd);font-family:var(--head);font-weight:700;font-size:11px;padding:5px 10px;text-transform:uppercase;margin-bottom:20px}
+.sum .btn{width:100%}
+.sum.bump .tot{animation:bump .4s var(--snap)}
+@keyframes bump{40%{transform:scale(1.14) rotate(-3deg)}}
+
+/* how */
+.how{display:grid;grid-template-columns:repeat(4,1fr);border:var(--bd);box-shadow:var(--sh);background:var(--w)}
+.how div{padding:clamp(22px,2.6vw,36px);border-left:var(--bd);transition:background .2s,color .2s}
+.how div:first-child{border-left:0}
+.how div:hover{background:var(--k);color:var(--y)}
+.how b{font-family:var(--head);font-weight:900;font-size:clamp(46px,5.4vw,84px);line-height:1;display:block;color:transparent;-webkit-text-stroke:2px var(--k);margin-bottom:18px;transition:-webkit-text-stroke-color .2s}
+.how div:hover b{-webkit-text-stroke-color:var(--y)}
+.how h3{font-size:17px;margin-bottom:10px}
+.how p{font-size:15px}
+
+/* place */
+.place{display:grid;grid-template-columns:1.1fr .9fr;border:var(--bd);box-shadow:12px 12px 0 var(--k);background:var(--k);color:var(--w)}
+.place figure{border-right:var(--bd);min-height:340px;overflow:hidden}
+.place img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.15);transition:filter .5s,transform .8s var(--ease)}
+.place:hover img{filter:none;transform:scale(1.04)}
+.place .tx{padding:clamp(26px,4vw,60px);display:flex;flex-direction:column;gap:20px;justify-content:center}
+.place h2{font-size:clamp(30px,4.4vw,64px);color:var(--y)}
+.place ul{list-style:none;display:grid;gap:10px;font-weight:500}
+.place li{display:flex;gap:14px;border-bottom:1px solid #444;padding-bottom:10px}
+.place li b{font-family:var(--head);font-size:11px;text-transform:uppercase;color:var(--y);min-width:74px;padding-top:4px}
+
+/* reviews */
+.notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(270px,100%),1fr));gap:clamp(20px,2.6vw,34px)}
+.note{border:var(--bd);box-shadow:var(--sh);padding:26px;background:var(--y);transition:transform .3s var(--snap)}
+.note:nth-child(1){transform:rotate(-2deg)}.note:nth-child(2){background:var(--p);transform:rotate(1.5deg)}.note:nth-child(3){background:var(--g);transform:rotate(-1deg)}.note:nth-child(4){background:var(--w);transform:rotate(2deg)}
+.note:hover{transform:rotate(0) scale(1.04)}
+.note p{font-weight:700;font-size:18px;line-height:1.35}
+.note span{display:block;margin-top:18px;font-family:var(--head);font-size:11px;text-transform:uppercase}
+
+/* order */
+.order{background:var(--y);border-top:var(--bd)}
+.order-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,80px);align-items:center}
+.order h2{font-size:clamp(34px,4.6vw,66px)}
+.order p{font-size:clamp(17px,1.4vw,21px);font-weight:500;margin-top:22px;max-width:40ch}
+form{border:var(--bd);background:var(--w);box-shadow:12px 12px 0 var(--k);padding:clamp(20px,3vw,36px);display:grid;gap:16px}
+label{font-family:var(--head);font-weight:700;font-size:11px;text-transform:uppercase;display:grid;gap:8px}
+input,textarea{font:inherit;font-weight:500;border:var(--bd);background:var(--w);padding:14px;min-height:54px;width:100%;border-radius:0;transition:background .15s,box-shadow .15s}
+input:focus,textarea:focus{outline:0;background:#FFF9C4;box-shadow:4px 4px 0 var(--k)}
+.fine{font-size:13px;color:#555}
+
+footer{background:var(--k);color:var(--w);padding:clamp(40px,5vw,70px) 0 0;overflow:hidden}
+.ft{display:flex;flex-wrap:wrap;justify-content:space-between;gap:30px;padding-bottom:40px}
+.ft h4{font-family:var(--head);font-size:11px;text-transform:uppercase;color:var(--y);margin-bottom:12px}
+.ft a,.ft p{display:block;color:#ccc}.ft a:hover{color:var(--y)}
+.huge{font-family:var(--head);font-weight:900;font-size:clamp(54px,15.5vw,270px);line-height:.78;letter-spacing:-.05em;color:var(--y);text-align:center;white-space:nowrap;transform:translateY(8%)}
+.copy{font-size:12px;color:#888;text-align:center;padding:26px 16px;border-top:1px solid #333;background:var(--k);position:relative}
+
+.cart{position:fixed;right:18px;bottom:18px;z-index:60;border:var(--bd);background:var(--r);color:#fff;box-shadow:var(--sh);font-family:var(--head);font-weight:900;font-size:13px;text-transform:uppercase;padding:0 18px;min-height:56px;display:flex;align-items:center;gap:10px;transform:translateY(160%);transition:transform .4s var(--snap)}
+.cart.on{transform:none}
+.cart b{background:var(--k);color:var(--y);min-width:30px;height:30px;display:grid;place-items:center;padding:0 6px}
+.cart.hit{animation:hit .35s var(--snap)}
+@keyframes hit{50%{transform:scale(1.15) rotate(-4deg)}}
+
+.rv{opacity:0;transform:translateY(40px);transition:opacity .6s var(--ease),transform .7s var(--snap);transition-delay:calc(var(--d,0)*70ms)}
+.rv.in{opacity:1;transform:none}
+.note.rv.in:nth-child(1){transform:rotate(-2deg)}.note.rv.in:nth-child(2){transform:rotate(1.5deg)}.note.rv.in:nth-child(3){transform:rotate(-1deg)}.note.rv.in:nth-child(4){transform:rotate(2deg)}
+.note.rv.in:hover{transform:rotate(0) scale(1.04)}
+.sum.rv.in{transform:rotate(1.5deg)}
+
+@media (max-width:980px){
+  .burger{display:block}
+  .links{display:none;position:absolute;left:0;right:0;top:100%;flex-direction:column;background:var(--y);border:0;border-bottom:var(--bd)}
+  .open .links{display:flex}
+  .links a{min-height:60px;border-right:0;border-top:var(--bd);font-size:15px;padding:0 var(--pad)}
+  .nav-in{padding-right:0}
+  .hero-grid,.combo-grid,.order-grid,.place{grid-template-columns:1fr}
+  .hero h1,.order h2{font-size:9.6vw}
+  .pic{max-width:420px;margin-top:10px}
+  .badge{left:-4%}.tape{right:-2%}
+  .sum{position:static;transform:none}.sum.rv.in{transform:none}
+  .how{grid-template-columns:1fr 1fr}
+  .how div:nth-child(3){border-left:0}.how div:nth-child(n+3){border-top:var(--bd)}
+  .place figure{border-right:0;border-bottom:var(--bd);min-height:0;aspect-ratio:16/10}
+}
+@media (max-width:560px){
+  :root{--sh:4px 4px 0 var(--k)}
+  .logo{font-size:18px}.logo svg{width:42px;height:32px}
+  .cta .btn{width:100%}
+  .pic figure{box-shadow:8px 8px 0 var(--k)}
+  .filters{flex-wrap:nowrap;overflow-x:auto;margin-inline:calc(var(--pad)*-1);padding:0 var(--pad) 8px;scrollbar-width:none;width:calc(100% + var(--pad)*2)}
+  .filters::-webkit-scrollbar{display:none}
+  .filters button{flex:none}
+  .how{grid-template-columns:1fr}
+  .how div{border-left:0}.how div:nth-child(n+2){border-top:var(--bd)}
+  .opts label{flex:1 1 100%}.opts span{justify-content:space-between}
+  form,.sum,.place{box-shadow:8px 8px 0 var(--k)}
+  .cart{right:12px;bottom:12px}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="blk" viewBox="0 0 16 12">
+    <rect x="5" y="2" width="9.5" height="6.5" fill="#111"/><rect x="1" y="1" width="5" height="5.5" fill="#111"/>
+    <rect x="1" y="6" width="2" height="5" fill="#111"/><rect x="3" y="9.5" width="1.5" height="1.5" fill="#111"/>
+    <rect x="6" y="8" width="2.2" height="3.5" fill="#111"/><rect x="11.3" y="8" width="2.2" height="3.5" fill="#111"/>
+    <rect x="14.5" y="3" width="1" height="3" fill="#111"/>
+    <rect x="4.2" y="0" width="3.3" height="4.4" fill="#FF4D1C" stroke="#111" stroke-width=".5"/>
+    <rect x="2.2" y="2.6" width="1.1" height="1.1" fill="#FFE500"/>
+  </symbol>
+</svg>
+
+<div class="tick" aria-hidden="true"><div>
+  <span>Доставка за 30 минут</span><span>Комбо от 590 ₽</span><span>Открыто до 02:00</span><span>Тут могла быть ваша акция</span><span>Бесплатно от 1 500 ₽</span>
+  <span>Доставка за 30 минут</span><span>Комбо от 590 ₽</span><span>Открыто до 02:00</span><span>Тут могла быть ваша акция</span><span>Бесплатно от 1 500 ₽</span>
+</div></div>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a href="#top" class="logo" aria-label="SLONIK97"><svg><use href="#blk"/></svg><span>SLONIK<b>97</b></span></a>
+    <ul class="links">
+      <li><a href="#menu">Меню</a></li>
+      <li><a href="#combo">Комбо</a></li>
+      <li><a href="#how">Как готовим</a></li>
+      <li><a href="#place">Где мы</a></li>
+      <li><a href="#order" class="hot">Заказать</a></li>
+    </ul>
+    <button class="burger" aria-label="Меню" aria-expanded="false"><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <h1>
+        <span><i style="--i:0">Еда с</i></span>
+        <span><i style="--i:1" class="out">характером</i></span>
+        <span><i style="--i:2"><b class="box">слона</b></i></span>
+      </h1>
+      <p class="rv" style="--d:4">Бургеры на&nbsp;открытом гриле, лапша из&nbsp;раскалённого вока и&nbsp;соусы, которые мы варим сами. Большие порции. Без&nbsp;компромиссов.</p>
+      <div class="cta rv" style="--d:5"><a href="#menu" class="btn">Смотреть меню</a><a href="#combo" class="btn alt">Собрать комбо</a></div>
+      <div class="facts rv" style="--d:6"><span class="chip">★ 4.9 рейтинг</span><span class="chip">30 мин доставка</span><span class="chip">97% возвращаются</span></div>
+    </div>
+    <div class="pic rv" style="--d:2">
+      <span class="tape">−20% на первый заказ</span>
+      <figure><img src="img/burger.jpg" alt="Фирменный бургер SLONIK" fetchpriority="high"></figure>
+      <div class="badge">
+        <svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="98" fill="#111"/><path id="circ" d="M100,100 m-74,0 a74,74 0 1,1 148,0 a74,74 0 1,1 -148,0" fill="none"/><text font-family="Unbounded,sans-serif" font-weight="700" font-size="17.5" fill="#FFE500" letter-spacing="2.2"><textPath href="#circ">ГОРЯЧО ✦ СОЧНО ✦ БЫСТРО ✦ ЧЕСТНО ✦ </textPath></text></svg>
+        <b>97</b>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="big" aria-hidden="true"><div>
+  <span>Бургеры</span><span>Лапша</span><span>Рамен</span><span>Гёдза</span><span>Пицца</span><span>Картошка</span>
+  <span>Бургеры</span><span>Лапша</span><span>Рамен</span><span>Гёдза</span><span>Пицца</span><span>Картошка</span>
+</div></div>
+
+<section id="menu">
+  <div class="wrap">
+    <div class="top">
+      <h2 class="rv">Выбирай<br><em>и&nbsp;жуй</em></h2>
+      <div class="filters rv" style="--d:1" role="group" aria-label="Фильтр меню">
+        <button class="on" data-f="all">Всё</button><button data-f="burger">Бургеры</button><button data-f="wok">Вок и&nbsp;рамен</button><button data-f="side">Закуски</button>
+      </div>
+    </div>
+    <div class="grid" id="grid">
+      <article class="food rv" data-c="burger"><span class="chip lab r">Хит</span><figure><img src="img/burger2.jpg" alt="Двойной чизбургер" loading="lazy"></figure><div class="in"><h3>Слон двойной</h3><p>Две котлеты из&nbsp;мраморной говядины, чеддер, маринованный огурец, фирменный соус</p><div class="row"><span class="pr">590 ₽</span><button class="add" aria-label="В корзину">+</button></div></div></article>
+      <article class="food rv" style="--d:1" data-c="burger"><span class="chip lab">Классика</span><figure><img src="img/burger3.jpg" alt="Классический бургер" loading="lazy"></figure><div class="in"><h3>Честный чиз</h3><p>Говядина, томат, салат айсберг, красный лук, булочка с&nbsp;кунжутом</p><div class="row"><span class="pr">450 ₽</span><button class="add" aria-label="В корзину">+</button></div></div></article>
+      <article class="food rv" style="--d:2" data-c="wok"><span class="chip lab b">Остро</span><figure><img src="img/ramen.jpg" alt="Рамен с яйцом и креветками" loading="lazy"></figure><div class="in"><h3>Рамен «Хобот»</h3><p>Насыщенный бульон, пшеничная лапша, креветки, яйцо, зелёный лук</p><div class="row"><span class="pr">620 ₽</span><button class="add" aria-label="В корзину">+</button></div></div></article>
+      <article class="food rv" data-c="wok"><span class="chip lab g">Веган</span><figure><img src="img/noodles.jpg" alt="Лапша вок" loading="lazy"></figure><div class="in"><h3>Вок терияки</h3><p>Гречневая соба, овощи, кунжут, соус терияки. Курица +120&nbsp;₽</p><div class="row"><span class="pr">480 ₽</span><button class="add" aria-label="В корзину">+</button></div></div></article>
+      <article class="food rv" style="--d:1" data-c="side"><span class="chip lab">6 штук</span><figure><img src="img/dumplings.jpg" alt="Гёдза на пару" loading="lazy"></figure><div class="in"><h3>Гёдза на&nbsp;пару</h3><p>Свинина с&nbsp;имбирём или креветка, соевый соус с&nbsp;чили</p><div class="row"><span class="pr">390 ₽</span><button class="add" aria-label="В корзину">+</button></div></div></article>
+      <article class="food rv" style="--d:2" data-c="side"><span class="chip lab r">Новинка</span><figure><img src="img/pizza.jpg" alt="Пицца на доске" loading="lazy"></figure><div class="in"><h3>Пицца-лодка</h3><p>Тонкое тесто, моцарелла, пепперони, вяленые томаты, базилик</p><div class="row"><span class="pr">540 ₽</span><button class="add" aria-label="В корзину">+</button></div></div></article>
+      <article class="food rv" data-c="wok"><span class="chip lab">Сытно</span><figure><img src="img/rice.jpg" alt="Жареный рис" loading="lazy"></figure><div class="in"><h3>Рис из&nbsp;вока</h3><p>Жареный рис с&nbsp;курицей, яйцом, овощами и&nbsp;лаймом</p><div class="row"><span class="pr">430 ₽</span><button class="add" aria-label="В корзину">+</button></div></div></article>
+      <article class="food rv" style="--d:1" data-c="side"><span class="chip lab g">К&nbsp;бургеру</span><figure><img src="img/fries.jpg" alt="Картофель фри" loading="lazy"></figure><div class="in"><h3>Фри с&nbsp;кожурой</h3><p>Хрустящий картофель, морская соль, соус на&nbsp;выбор</p><div class="row"><span class="pr">220 ₽</span><button class="add" aria-label="В корзину">+</button></div></div></article>
+      <article class="food yours rv" style="--d:2" data-c="burger wok side"><figure>Тут могло быть ваше блюдо</figure><div class="in"><h3>Ваше название</h3><p>И&nbsp;описание, от&nbsp;которого сразу хочется заказать</p><div class="row"><span class="pr">Ваша цена</span><button class="add" aria-label="В корзину">+</button></div></div></article>
+    </div>
+  </div>
+</section>
+
+<section id="combo" class="combo">
+  <div class="wrap">
+    <h2 class="rv">Собери <em>комбо</em></h2>
+    <div class="combo-grid">
+      <div>
+        <div class="step rv"><h3><b>1</b>Главное</h3><div class="opts">
+          <label><input type="radio" name="main" value="590" data-n="Слон двойной" checked><span>Слон двойной <small>590</small></span></label>
+          <label><input type="radio" name="main" value="450" data-n="Честный чиз"><span>Честный чиз <small>450</small></span></label>
+          <label><input type="radio" name="main" value="620" data-n="Рамен «Хобот»"><span>Рамен «Хобот» <small>620</small></span></label>
+          <label><input type="radio" name="main" value="480" data-n="Вок терияки"><span>Вок терияки <small>480</small></span></label>
+        </div></div>
+        <div class="step rv" style="--d:1"><h3><b>2</b>Закуска</h3><div class="opts">
+          <label><input type="radio" name="side" value="220" data-n="Фри с кожурой" checked><span>Фри с&nbsp;кожурой <small>220</small></span></label>
+          <label><input type="radio" name="side" value="390" data-n="Гёдза"><span>Гёдза <small>390</small></span></label>
+          <label><input type="radio" name="side" value="260" data-n="Луковые кольца"><span>Луковые кольца <small>260</small></span></label>
+        </div></div>
+        <div class="step rv" style="--d:2"><h3><b>3</b>Напиток</h3><div class="opts">
+          <label><input type="radio" name="drink" value="180" data-n="Лимонад" checked><span>Лимонад <small>180</small></span></label>
+          <label><input type="radio" name="drink" value="150" data-n="Кола"><span>Кола <small>150</small></span></label>
+          <label><input type="radio" name="drink" value="210" data-n="Морс"><span>Морс <small>210</small></span></label>
+          <label><input type="radio" name="drink" value="0" data-n="Без напитка"><span>Без напитка <small>0</small></span></label>
+        </div></div>
+      </div>
+      <aside class="sum rv" id="sum" aria-live="polite">
+        <h3>Твоё комбо</h3>
+        <ul id="lines"></ul>
+        <span class="old" id="old"></span>
+        <span class="tot" id="tot"></span>
+        <span class="save" id="save"></span>
+        <a href="#order" class="btn">Заказать комбо</a>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="top"><h2 class="rv">Как мы<br>готовим</h2></div>
+    <div class="how rv">
+      <div><b>01</b><h3>Рубим сами</h3><p>Фарш из&nbsp;цельного куска говядины — каждое утро, никакой заморозки.</p></div>
+      <div><b>02</b><h3>Жарим на&nbsp;огне</h3><p>Открытый гриль и&nbsp;вок на&nbsp;350°. Корочка снаружи, сок внутри.</p></div>
+      <div><b>03</b><h3>Варим соусы</h3><p>Девять фирменных соусов по&nbsp;своим рецептам. Без&nbsp;порошков.</p></div>
+      <div><b>04</b><h3>Везём горячим</h3><p>Термосумки и&nbsp;свои курьеры. Опоздали — следующий заказ за&nbsp;наш счёт.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="place" style="padding-top:0">
+  <div class="wrap">
+    <div class="place rv">
+      <figure><img src="img/hall.jpg" alt="Зал стрит-фуд бара" loading="lazy"></figure>
+      <div class="tx">
+        <h2>Залетай в&nbsp;гости</h2>
+        <ul>
+          <li><b>Адрес</b><span>Ваш город, ул. Ваша улица, 97</span></li>
+          <li><b>Часы</b><span>Вс–Чт 11:00–00:00 · Пт–Сб до&nbsp;02:00</span></li>
+          <li><b>Телефон</b><a href="tel:+70000000097">+7 (000) 000-00-97</a></li>
+        </ul>
+        <a href="#order" class="btn red" style="align-self:flex-start">Забронировать стол</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="top"><h2 class="rv">Народ<br>говорит</h2></div>
+    <div class="notes">
+      <div class="note rv"><p>«Слон двойной — это не&nbsp;бургер, это событие. Еле доел, хочу ещё».</p><span>— Дима, ест тут по&nbsp;пятницам</span></div>
+      <div class="note rv" style="--d:1"><p>«Привезли за&nbsp;24 минуты, рамен горячий, лапша не&nbsp;разварилась. Магия».</p><span>— Катя, заказывает в&nbsp;офис</span></div>
+      <div class="note rv" style="--d:2"><p>«Соусы — отдельная любовь. Продайте мне банку чесночного!»</p><span>— Артём, фанат соусов</span></div>
+      <div class="note rv" style="--d:3"><p>«Тут мог быть отзыв вашего гостя. Громкий, честный и&nbsp;вкусный».</p><span>— Ваш гость, ваш город</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="order" class="order">
+  <div class="wrap order-grid">
+    <div>
+      <h2 class="rv">Голодный? Жми.</h2>
+      <p class="rv" style="--d:1">Оставь номер — перезвоним за&nbsp;две минуты, примем заказ и&nbsp;скажем точное время доставки.</p>
+    </div>
+    <form id="form" class="rv" style="--d:2">
+      <label>Имя<input name="name" required placeholder="Как тебя зовут?" autocomplete="name"></label>
+      <label>Телефон<input name="tel" type="tel" required placeholder="+7 (___) ___-__-__" autocomplete="tel"></label>
+      <label>Что привезти<input name="what" placeholder="Например: комбо со Слоном двойным"></label>
+      <button class="btn red" type="submit">Заказать сейчас</button>
+      <p class="fine">Демо-форма: данные никуда не&nbsp;отправляются.</p>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap ft">
+    <a href="#top" class="logo" style="color:var(--y)"><svg style="background:var(--y);padding:4px"><use href="#blk"/></svg><span>SLONIK<b style="background:var(--y);color:var(--k)">97</b></span></a>
+    <div><h4>Меню</h4><a href="#menu">Бургеры</a><a href="#menu">Вок и&nbsp;рамен</a><a href="#combo">Комбо</a></div>
+    <div><h4>Контакты</h4><a href="tel:+70000000097">+7 (000) 000-00-97</a><p>Ваш город, Ваша улица, 97</p></div>
+    <div><h4>Соцсети</h4><a href="#top">Telegram</a><a href="#top">ВКонтакте</a></div>
+  </div>
+  <div class="huge" aria-hidden="true">SLONIK97</div>
+  <div class="copy">© 2026 SLONIK97 · Демонстрационный сайт · Фото: Unsplash</div>
+</footer>
+
+<a href="#order" class="cart" id="cart">Корзина <b id="cnt">0</b></a>
+
+<script>
+(function(){
+  const $=(s,c=document)=>c.querySelector(s), $$=(s,c=document)=>[...c.querySelectorAll(s)];
+  const rub=n=>n.toLocaleString('ru-RU')+' ₽';
+
+  // nav
+  const nav=$('#nav'), burger=$('.burger');
+  burger.onclick=()=>burger.setAttribute('aria-expanded',nav.classList.toggle('open'));
+  $$('.links a').forEach(a=>a.onclick=()=>nav.classList.remove('open'));
+
+  // reveal
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.1,rootMargin:'0px 0px -5% 0px'});
+  $$('.rv').forEach(el=>io.observe(el));
+
+  // filter
+  const foods=$$('.food');
+  $$('.filters button').forEach(b=>b.onclick=()=>{
+    $$('.filters button').forEach(x=>x.classList.toggle('on',x===b));
+    let n=0;
+    foods.forEach(f=>{const show=b.dataset.f==='all'||f.dataset.c.split(' ').includes(b.dataset.f);
+      f.classList.remove('pop');f.classList.toggle('gone',!show);
+      if(show){f.classList.add('in');f.style.setProperty('--n',n++);void f.offsetWidth;f.classList.add('pop')}});
+  });
+
+  // cart
+  const cart=$('#cart'),cnt=$('#cnt');let c=0;
+  $$('.add').forEach(b=>b.onclick=()=>{c++;cnt.textContent=c;cart.classList.add('on');cart.classList.remove('hit');void cart.offsetWidth;cart.classList.add('hit')});
+
+  // combo
+  const sum=$('#sum');
+  function calc(){
+    const pick=$$('.combo input:checked'), total=pick.reduce((s,i)=>s+ +i.value,0), deal=Math.round(total*.85/10)*10;
+    $('#lines').innerHTML=pick.map(i=>'<li><span>'+i.dataset.n+'</span><span>'+(+i.value?rub(+i.value):'—')+'</span></li>').join('');
+    $('#old').textContent=rub(total);$('#tot').textContent=rub(deal);$('#save').textContent='Экономия '+rub(total-deal);
+    sum.classList.remove('bump');void sum.offsetWidth;sum.classList.add('bump');
+  }
+  $$('.combo input').forEach(i=>i.onchange=calc);calc();
+
+  // form
+  $('#form').addEventListener('submit',e=>{e.preventDefault();const b=$('button',e.target);e.target.reset();b.textContent='Принято! (это демо)';setTimeout(()=>b.textContent='Заказать сейчас',2600)});
+})();
+</script>
+</body>
+</html>
